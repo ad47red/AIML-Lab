@@ -1,8 +1,6 @@
 import pandas as pd
 import math
 
-# function to calculate the entropy of entire dataset
-# -----------------------------------------------------------------------
 def base_entropy(dataset):
     p = 0
     n = 0
@@ -22,10 +20,6 @@ def base_entropy(dataset):
             ((p / (p + n)) * (math.log2(p / (p + n))) + (n / (p + n)) * (math.log2(n/ (p + n)))))
         return entropy
 
-# -----------------------------------------------------------------------
-
-# function to calculate the entropy of attributes
-# -----------------------------------------------------------------------
 def entropy(dataset, feature, attribute):
     p = 0
     n = 0
@@ -45,12 +39,6 @@ def entropy(dataset, feature, attribute):
                 ((p / (p + n)) * (math.log2(p / (p + n))) + (n / (p + n)) * (math.log2(n/ (p + n)))))
             return entropy
 
-
-# -----------------------------------------------------------------------
-
-
-# a utility function for checking purity and impurity of a child
-# -----------------------------------------------------------------------
 def counter(target, attribute, i):
     p = 0
     n = 0
@@ -62,9 +50,6 @@ def counter(target, attribute, i):
             n = n + 1
     return p, n
 
-# -----------------------------------------------------------------------
-# function that calculates the information gain
-# -----------------------------------------------------------------------
 def Information_Gain(dataset, feature):
     Distinct = list(set(feature))
     Info_Gain = 0
@@ -73,12 +58,6 @@ def Information_Gain(dataset, feature):
         Info_Gain = base_entropy(dataset) - Info_Gain
     return Info_Gain
 
-
-# -----------------------------------------------------------------------
-
-
-# function that generates the childs of selected Attribute
-# -----------------------------------------------------------------------
 def generate_childs(dataset, attribute_index):
     distinct = list(dataset.iloc[:, attribute_index])
     childs = dict()
@@ -86,22 +65,12 @@ def generate_childs(dataset, attribute_index):
         childs[i] = counter(dataset.iloc[:, -1], dataset.iloc[:, attribute_index], i)
     return childs
 
-# -----------------------------------------------------------------------
-
-# function that modifies the dataset according to the impure childs
-# -----------------------------------------------------------------------
 def modify_data_set(dataset,index, feature, impurity):
     size = len(dataset)
     subdata = dataset[dataset[feature] == impurity]
     del (subdata[subdata.columns[index]])
     return subdata
 
-
-# -----------------------------------------------------------------------
-
-
-# function that return attribute with the greatest Information Gain
-# -----------------------------------------------------------------------
 def greatest_information_gain(dataset):
     max = -1
     attribute_index = 0
@@ -114,12 +83,6 @@ def greatest_information_gain(dataset):
             attribute_index = i
     return attribute_index
 
-
-# -----------------------------------------------------------------------
-
-
-# function to construct the decision tree
-# -----------------------------------------------------------------------
 def construct_tree(dataset, tree):
     target = dataset.iloc[:, -1]
     impure_childs = []
@@ -147,9 +110,6 @@ def main():
     result = construct_tree(df, tree)
     for key, value in result.items():
         print(key, " => ", value)
-
-
-# -----------------------------------------------------------------------
-
+        
 if __name__ == "__main__":
     main()
